@@ -11,6 +11,6 @@ MODEL_NAME = 'sentence-transformers/all-MiniLM-L6-v2'
 CHUNK_TOKENS = 200
 CHUNK_OVERLAP = 35
 SCHEMA_VERSION = 'page-blocks-v1-token200-overlap35'
-# Retained default from PaFet; configurable because provider support can change.
+# Configurable because provider support can change.
 QWEN_MODEL = os.getenv('QWEN_MODEL', 'Qwen/Qwen2.5-3B-Instruct:featherless-ai')
 HF_BASE_URL = 'https://router.huggingface.co/v1'

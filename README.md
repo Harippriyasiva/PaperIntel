@@ -5,10 +5,9 @@ titles and abstracts with MiniLM, downloads chosen PDFs, extracts page-aware
 passages, and retrieves evidence for research questions. When a Hugging Face
 inference token is configured, a hosted Qwen model can compose a cited answer.
 
-This work evolves the mentor-guided PaFet prototype. The retained ideas are
-arXiv discovery, semantic ranking, and the Streamlit reader. The additions are
-full-text retrieval, saved local collections, page provenance, citation checks,
-and a bounded public-demo mode. It does not use LangChain, Ollama, or agents.
+It combines paper discovery with a reader that links retrieved passages back to
+their PDF pages. You can build a collection, compare evidence across papers,
+and download a retrieval trace to inspect how results were found.
 
 ## Local setup
 
@@ -57,11 +56,13 @@ stores local collection metadata. The interface uses Streamlit.
 Run `python -m pip install -r requirements-dev.txt` and `python -m pytest -q`.
 The current Windows checks passed 26 tests, a live arXiv search, real model
 loading and evidence retrieval, and processing of five real papers. The live
-five-paper collection held 506 passages. On the public deployment, the bundled paper produced 123 passages and returned page-linked evidence for a RAG question. No authenticated Qwen answer has been verified. See [verification](docs/VERIFICATION.md).
+five-paper collection held 506 passages. On the public deployment, the bundled
+paper produced 123 passages and returned page-linked evidence for a RAG question.
+No authenticated Qwen answer has been verified. See [verification](docs/VERIFICATION.md).
 
 arXiv limits the candidate pool; PDFs with scans, columns, tables, equations,
 or figures may extract imperfectly. Citation-ID validation only checks whether
 the model cites retrieved passages; it does not prove the passage supports its
-claim. This is a portfolio demo, not a production multi-user research service.
+claim.
 
 Thank you to arXiv for its open-access interoperability.

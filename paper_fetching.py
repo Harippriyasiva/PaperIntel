@@ -1,4 +1,4 @@
-"""Compatibility imports for PaFet's discovery functions.
+"""Compatibility imports for paper discovery functions.
 
 The abstract-only generate_explanation function was deliberately replaced by
 rag.generation.generate(question, retrieved_passages). See docs/DECISIONS.md.

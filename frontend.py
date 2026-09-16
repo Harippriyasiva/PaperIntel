@@ -1,4 +1,4 @@
-"""PaFet's Streamlit theme/cards, evolved into PaperIntel's two-stage UI."""
+"""PaperIntel's discovery and evidence-reading interface."""
 import html
 import json
 import os
@@ -892,5 +892,5 @@ with intelligence_tab:
             st.info('The question or scope changed. Retrieve again to avoid showing stale evidence.')
 
 st.divider()
-st.caption('Evolved from the supplied mentor-guided PaFet project. Independent extensions: full-text retrieval, persistent collections, and cited Qwen answers.')
+st.caption('Discover papers, inspect the original PDF, and trace answers back to page-linked evidence.')
 st.caption('Thank you to arXiv for use of its open access interoperability.')
