@@ -1,1 +1,1 @@
-"""PaFet's paper discovery, evolved for PaperIntel."""
+"""Paper discovery, document handling, and embeddings for PaperIntel."""
