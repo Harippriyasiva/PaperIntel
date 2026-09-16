@@ -40,7 +40,8 @@ accepts one. Saved local collections persist in the excluded `data/` directory.
 
 ## Public demo
 
-Deploy `streamlit_app.py` on Streamlit Community Cloud with Python 3.12. This
+The public demo is live at [paperintel-haripriya.streamlit.app](https://paperintel-haripriya.streamlit.app/).
+It deploys `streamlit_app.py` on Streamlit Community Cloud with Python 3.12. This
 entry point keeps visitors' temporary collections separate, limits candidate
 counts, and caps expensive operations. It does not provide durable user
 accounts or guaranteed storage. Generation remains disabled until `HF_TOKEN`
@@ -56,8 +57,7 @@ stores local collection metadata. The interface uses Streamlit.
 Run `python -m pip install -r requirements-dev.txt` and `python -m pytest -q`.
 The current Windows checks passed 26 tests, a live arXiv search, real model
 loading and evidence retrieval, and processing of five real papers. The live
-five-paper collection held 506 passages. No authenticated Qwen answer or public
-deployment has been verified. See [verification](docs/VERIFICATION.md).
+five-paper collection held 506 passages. On the public deployment, the bundled paper produced 123 passages and returned page-linked evidence for a RAG question. No authenticated Qwen answer has been verified. See [verification](docs/VERIFICATION.md).
 
 arXiv limits the candidate pool; PDFs with scans, columns, tables, equations,
 or figures may extract imperfectly. Citation-ID validation only checks whether
