@@ -2,9 +2,7 @@
 
 ## Problem and boundary
 
-A reader can find papers but still spends time opening PDFs, finding methodological details, comparing claims, and checking where an answer came from. PaperIntel adds a focused evidence layer to the existing discovery application. The project story is information retrieval and grounded generation. It should not be positioned as another workflow automation project.
-
-The original PaFet application supplied the foundation. Preserve mentor attribution. Describe your independent work through the actual extensions and your understanding, and acknowledge implementation assistance when relevant. Do not claim sole authorship of the mentor-guided baseline or benchmark gains that have not been measured.
+A reader can find papers but still spends time opening PDFs, finding methodological details, comparing claims, and checking where an answer came from. PaperIntel combines paper discovery with page-linked evidence retrieval and optional grounded generation.
 
 ## Two representations, two indexes
 
@@ -35,7 +33,7 @@ Discovery is two-stage retrieval in the information-retrieval sense: arXiv retur
 
 **Why:** small, CPU-friendly baseline and exact, inspectable retrieval at this scale.
 
-**How:** normalized vectors make inner product equal cosine similarity. A score is displayed as a score, never as a percentage likelihood. The repeated-title heuristic from PaFet is removed.
+**How:** normalized vectors make inner product equal cosine similarity. A score is displayed as a score, never as a percentage likelihood.
 
 **Trade-off:** a 50-paper candidate list does not need FAISS for performance; a matrix multiplication could do the same job. FAISS gives a consistent implementation for the larger passage collection. No approximate-nearest-neighbor performance claim is justified because IndexFlatIP performs exact search. General embeddings may miss specialist distinctions. Long discovery abstracts can be truncated.
 
@@ -100,10 +98,6 @@ Discovery is two-stage retrieval in the information-retrieval sense: arXiv retur
 **Trade-off:** this validates citation identifiers, not every claim. The model can omit citations on some claims or misuse a valid citation. No automatic semantic verifier is claimed. Prompts instruct abstention when evidence is insufficient, but retrieval always returns neighbors; there is no calibrated confidence threshold.
 
 **Interview:** “Traceability and truth are different. I validate provenance structurally and evaluate support manually with a rubric rather than advertising hallucination-free answers.”
-
-## Why no agents or Ollama
-
-The required behavior has clear user-driven steps and bounded retrieval. Agents would add nondeterministic planning and more model calls without a demonstrated need. Ollama would be relevant if local inference/privacy/offline generation were a concrete requirement and the hardware could support it. Neither is needed merely to expand the stack list.
 
 ## Reference documentation checked during development
 

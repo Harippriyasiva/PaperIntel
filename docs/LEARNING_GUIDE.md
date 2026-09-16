@@ -39,7 +39,7 @@ Explain why a FAISS row number alone is not a useful citation. It needs a stable
 
 ## 4. Separate retrieval from generation (10 minutes)
 
-Open “Learning view: exact context sent to Qwen.” Read the system instructions and evidence objects. Now generate the answer.
+Open “Learning view: exact context sent to Qwen.” Read the system instructions and evidence objects. If a Hugging Face token is configured, generate an answer and inspect it.
 
 Underline each factual claim. For each, identify the passage that supports it. If a citation points to a real passage but does not support the claim, mark it unsupported. Do not give credit just because a citation exists.
 
@@ -104,7 +104,7 @@ Use this diagnostic table:
 
 Explain the project in 60 seconds without naming every dependency:
 
-“I evolved a mentor-guided paper discovery application into a tool for questioning selected research papers. The discovery stage retrieves arXiv candidates and ranks title/abstract embeddings. The user chooses a collection; the intelligence stage extracts page-aware passages and indexes them separately. Questions retrieve scoped evidence, which a hosted Qwen model uses to generate cited answers. I made sources inspectable and added persistence and evaluation because fluent answers alone do not demonstrate grounding.”
+“PaperIntel helps readers move from finding papers to checking evidence inside them. It searches arXiv, ranks titles and abstracts with MiniLM, and lets the reader choose papers. It then extracts page-aware passages from the PDFs and retrieves relevant evidence for a question. The live app shows each passage with its source page. A configured Qwen model can use those passages to draft a cited answer, which still needs human verification.”
 
 Use this only after you can demonstrate the actual behavior. Replace general statements with measured results once you complete the evaluation; do not invent accuracy, latency improvements, or time-saved claims.
 
@@ -118,6 +118,6 @@ Be ready for these questions:
 - What is the difference between retrieval failure and generation failure?
 - Can a valid citation still be wrong?
 - What would change if the corpus grew to a million passages?
-- Which parts came from the mentored project, and what did you extend?
+- Which PaperIntel features can you explain and demonstrate yourself?
 
 Your first concrete task: complete exercises 1–4 and save one retrieval trace with your notes on which claims it supports.

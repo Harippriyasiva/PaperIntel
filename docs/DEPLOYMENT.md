@@ -1,20 +1,22 @@
-# Deploy the portfolio demo
+# Deployment and operations
 
-Deploy `streamlit_app.py` on Streamlit Community Cloud with Python 3.12.
-Use the requirements.txt in the repository root. The public entry point enables
-session-isolated temporary storage. Local persistent mode remains `frontend.py`.
+PaperIntel is live at [paperintel-haripriya.streamlit.app](https://paperintel-haripriya.streamlit.app/).
+Streamlit Community Cloud deploys `streamlit_app.py` from the `main` branch of
+[Harippriyasiva/PaperIntel](https://github.com/Harippriyasiva/PaperIntel) with
+Python 3.12 and the repository's `requirements.txt`. The public entry point
+uses temporary, session-isolated storage. Local persistent mode uses `frontend.py`.
 
-1. Put only this release source in a personal GitHub repository. Do not use
-   similarly named repositories belonging to other people or lab projects.
-2. Sign in at https://share.streamlit.io/ and create an app from that repository.
-3. Select `main`, entry point `streamlit_app.py`, and Python 3.12.
-4. Add HF_TOKEN and QWEN_MODEL in the host's Secrets settings to enable answers.
-   The selected Hugging Face model/provider must be available to your account.
-5. Deploy. Open the resulting URL in a new browser session.
-6. Search, prepare five papers, retrieve evidence, generate one answer, and inspect citations.
+The hosted app was checked with the bundled RAG paper: it extracted 19 pages,
+indexed 123 passages, and returned page-linked evidence for a question about
+RAG-Sequence and RAG-Token. Public arXiv search and five-paper preparation were
+tested locally. Answer generation still needs a configured Hugging Face token
+and a live provider check.
 
-Never upload .env, .venv, local data, personal backups, or secrets.toml.
-The release ZIP excludes those files. A GitHub source URL is not an app deployment.
+To enable generated answers, configure `HF_TOKEN` and, if needed, `QWEN_MODEL`
+in the app's Streamlit Secrets settings. Test the selected model with your
+Hugging Face account before treating generated answers as verified. Keep
+tokens in Secrets; `.env`, `.venv`, local data, and `secrets.toml` are excluded
+from the repository.
 
 ## Demo behavior and limits
 
@@ -28,8 +30,6 @@ The release ZIP excludes those files. A GitHub source URL is not an app deployme
 - PDF downloads are limited to 40 MB; extraction supports at most 150 pages per PDF.
 - A provider token enables paid/quotad inference. Configure provider-side spending restrictions.
 - No user accounts, OCR, durable cloud collections, abuse-resistant distributed quotas, or availability SLA.
-
-This is a small portfolio demo, not a production multi-user research service.
 
 ## Runtime
 
