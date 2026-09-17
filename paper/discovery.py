@@ -101,7 +101,7 @@ def build_faiss_index(results, model):
     from paper import vector_index as faiss
     if not results:
         raise ValueError('No papers to index.')
-    # Retained title+abstract representation; removed the repeated-title heuristic.
+    # Represent each candidate with its title and abstract.
     embeddings = encode(model, [p['title'] + '. ' + p['summary'] for p in results])
     faiss.normalize_L2(embeddings)
     index = faiss.IndexFlatIP(embeddings.shape[1])
