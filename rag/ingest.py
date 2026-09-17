@@ -1,4 +1,4 @@
-"""Fill the user's original empty ingest.py with page-aware extraction and chunking."""
+"""Extract PDF text and create page-aware passages for retrieval."""
 import hashlib
 import re
 import unicodedata
