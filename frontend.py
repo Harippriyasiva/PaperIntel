@@ -14,7 +14,7 @@ from rag.retrieval import retrieve
 from rag.generation import generate, build_messages
 from rag.guided import GUIDES, guided_question, retrieve_overview
 
-APP_VERSION = '0.4.0 · Verified Demo Edition'
+APP_VERSION = '0.4.1'
 
 st.set_page_config(
     page_title="PaperIntel",
@@ -661,7 +661,7 @@ def prepare(papers, name, learning_sample=False):
         try:
             if PUBLIC_DEMO:
                 if len(papers) > 5:
-                    raise ValueError('The public demo supports up to five papers per collection.')
+                    raise ValueError('The public app supports up to five papers per collection.')
                 reserve('prepare')
             collection = store.build(papers, get_model(), name, progress=status.write,
                                      learning_sample=learning_sample)
@@ -699,7 +699,7 @@ with st.sidebar:
     st.caption(APP_VERSION)
     st.caption('Find papers. Understand the evidence.')
     if PUBLIC_DEMO:
-        st.info('Public demo: collections are private to this browser session and temporary. Download your evidence before leaving.')
+        st.info('Your collection is private to this browser session and temporary. Download your evidence before leaving.')
     st.write('**Generation:** ' + ('Token configured' if os.getenv('HF_TOKEN') else 'Token not configured'))
     st.caption('Discovery and passage retrieval work without a Qwen token. The first MiniLM load needs internet.')
     if not PUBLIC_DEMO:
@@ -753,7 +753,7 @@ with discovery_tab:
                 with st.spinner('Fetching candidates and ranking their titles and abstracts…'):
                     if PUBLIC_DEMO:
                         if candidates > 50:
-                            raise ValueError('Choose a candidate pool of 25 or 50 for the public demo.')
+                            raise ValueError('Choose a candidate pool of 25 or 50 for the public app.')
                         reserve('search')
                     papers = cached_search(query.strip(), candidates, category, lo if use_years else None,
                                            hi if use_years else None, order)

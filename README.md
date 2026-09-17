@@ -1,17 +1,50 @@
 # PaperIntel
 
-PaperIntel is a research-paper reading demo. It searches arXiv, ranks candidate
-titles and abstracts with MiniLM, downloads chosen PDFs, extracts page-aware
-passages, and retrieves evidence for research questions. When a Hugging Face
-inference token is configured, a hosted Qwen model can compose a cited answer.
+**Explore research papers. Ask focused questions. Trace the evidence back to the page.**
 
-It combines paper discovery with a reader that links retrieved passages back to
-their PDF pages. You can build a collection, compare evidence across papers,
-and download a retrieval trace to inspect how results were found.
+PaperIntel is a Streamlit application for discovering arXiv papers and examining
+the evidence inside selected PDFs. It ranks paper titles and abstracts with
+MiniLM, builds a searchable collection of page-aware passages, and shows the
+source page for every retrieved result. When a Hugging Face token is configured,
+Qwen can draft a cited answer from those passages for the reader to verify.
 
-## Local setup
+**[Open PaperIntel](https://paperintel-haripriya.streamlit.app/)**
 
-Use Python 3.12 from a terminal in this directory:
+## What you can do
+
+- Search arXiv and choose papers for a reading collection.
+- Read the original PDFs and retrieve passages relevant to a question.
+- Follow each result to its PDF page and download a retrieval trace.
+- Compare evidence across selected papers.
+- Generate a cited answer when a compatible Qwen provider is configured.
+
+## Try it
+
+1. In the live app, select **Prepare bundled RAG paper**.
+2. Open **Paper Intelligence** and ask **How do RAG-Sequence and RAG-Token differ?**
+3. Select **Retrieve evidence**. Open the page-linked passages to inspect the source.
+
+The public app was verified with this workflow: the paper produced 19 extracted
+pages and 123 searchable passages, and the question returned six page-linked
+results. Generated answers are currently unavailable because the hosted app has
+no `HF_TOKEN` configured.
+
+## How it works
+
+| Step | What PaperIntel does |
+| --- | --- |
+| Discover | Searches arXiv and ranks title/abstract candidates with MiniLM. |
+| Prepare | Extracts PDF text into overlapping passages that retain paper and page metadata. |
+| Retrieve | Searches those passages with FAISS, or an exact NumPy fallback, and displays source pages. |
+| Answer (optional) | Sends retrieved passages to a configured Qwen provider and checks cited source IDs. |
+
+The public app keeps each visitor's collection temporary and separate. Local
+collections can be saved and reopened. See [deployment and operational details](docs/DEPLOYMENT.md)
+and the [verification record](docs/VERIFICATION.md).
+
+## Run locally
+
+Use Python 3.12 from this directory:
 
 ```powershell
 py -3.12 -m venv .venv
@@ -19,50 +52,18 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m streamlit run frontend.py
 ```
 
-The first MiniLM load downloads the model. You can inspect the bundled paper
-without a token. For generated answers, add your existing Hugging Face token to
-a local `.env` as `HF_TOKEN=...`; `.env` is excluded from Git. Never post it in
-chat or commit it. Provider availability, quotas, costs, and answer quality
-still need a real check with your account.
+Retrieval works without an inference token. To try generated answers locally,
+put your Hugging Face token in an untracked `.env` as `HF_TOKEN=...`. Set a
+compatible `QWEN_MODEL` if your provider requires one. Keep credentials out of
+Git; see [`.env.example`](.env.example) for the expected settings.
 
-## First demonstration
+Run the checks with `python -m pip install -r requirements-dev.txt` and
+`python -m pytest -q`. The current release passed 26 automated tests on
+Windows and processed five real papers locally into 506 passages. The public
+sample workflow was also verified. Answer quality and citation support still
+need a live Qwen check and evaluation; [the evaluation plan](docs/EVALUATION.md)
+describes that work.
 
-1. Select **Prepare bundled RAG paper**.
-2. Ask **How do RAG-Sequence and RAG-Token differ?** in Paper Intelligence.
-3. Select **Retrieve evidence** and inspect the source passages and PDF pages.
-4. If a token is configured, select **Generate cited answer** and verify each
-   claim against its linked passage. Citations are pointers, not proof.
-5. Search another topic and prepare five papers to compare their evidence.
-
-Normal local collections accept 5–25 papers; the bundled learning example
-accepts one. Saved local collections persist in the excluded `data/` directory.
-
-## Public demo
-
-The public demo is live at [paperintel-haripriya.streamlit.app](https://paperintel-haripriya.streamlit.app/).
-It deploys `streamlit_app.py` on Streamlit Community Cloud with Python 3.12. This
-entry point keeps visitors' temporary collections separate, limits candidate
-counts, and caps expensive operations. It does not provide durable user
-accounts or guaranteed storage. Generation remains disabled until `HF_TOKEN`
-is entered in the host's **Secrets** settings. See [deployment details](docs/DEPLOYMENT.md).
-
-The model uses the official MiniLM ONNX file, with attention-masked pooling to
-make normalized embeddings. Search uses FAISS where available and an exact
-NumPy inner-product fallback elsewhere. The PDF reader uses PyMuPDF; SQLite
-stores local collection metadata. The interface uses Streamlit.
-
-## Verification and limits
-
-Run `python -m pip install -r requirements-dev.txt` and `python -m pytest -q`.
-The current Windows checks passed 26 tests, a live arXiv search, real model
-loading and evidence retrieval, and processing of five real papers. The live
-five-paper collection held 506 passages. On the public deployment, the bundled
-paper produced 123 passages and returned page-linked evidence for a RAG question.
-No authenticated Qwen answer has been verified. See [verification](docs/VERIFICATION.md).
-
-arXiv limits the candidate pool; PDFs with scans, columns, tables, equations,
-or figures may extract imperfectly. Citation-ID validation only checks whether
-the model cites retrieved passages; it does not prove the passage supports its
-claim.
-
-Thank you to arXiv for its open-access interoperability.
+PaperIntel uses PyMuPDF for PDF text, SQLite for local collection metadata,
+MiniLM ONNX for embeddings, and Streamlit for the interface. Thanks to arXiv
+for making open-access paper discovery possible.

@@ -1,4 +1,4 @@
-"""Bounded, isolated storage and process-wide quotas for a small public demo."""
+"""Bounded, isolated storage and process-wide quotas for the public app."""
 import tempfile
 import threading
 import time
@@ -16,7 +16,7 @@ def reserve(action, now=None):
         while queue and now - queue[0] >= 3600:
             queue.popleft()
         if len(queue) >= LIMITS[action]:
-            raise ValueError('This demo has reached its hourly capacity. Please try again later.')
+            raise ValueError('PaperIntel has reached its hourly capacity. Please try again later.')
         queue.append(now)
 
 def session_data(state):
