@@ -17,15 +17,15 @@ Discovery is two-stage retrieval in the information-retrieval sense: arXiv retur
 
 ## Retain the existing UI and functions
 
-**What:** retain Streamlit, the original color/CSS system and card renderer, and the discovery function names.
+**What:** use Streamlit, the existing color and card system, and stable discovery function names.
 
 **Why:** the existing paper-search interaction provides a clear starting point for full-text evidence retrieval.
 
 **How:** move network and vector operations out of the UI; provide compatibility exports in `paper_fetching.py`; replace abstract-only insight widgets with collection and evidence controls.
 
-**Trade-off:** Streamlit reruns its script on interactions. Expensive actions belong behind buttons and caches. Static HTML uses escaped metadata. Some inherited CSS remains more verbose than necessary; a full visual rewrite is deferred.
+**Trade-off:** Streamlit reruns its script on interactions. Expensive actions belong behind buttons and caches. Static HTML uses escaped metadata. The CSS can be simplified in a later design pass.
 
-**Interview:** “I retained the functioning discovery baseline and separated application logic so I could add and test a full-text retrieval layer without coupling it to UI reruns.”
+**Interview:** “I separated application logic from the Streamlit UI so full-text retrieval can be tested without coupling it to UI reruns.”
 
 ## MiniLM and exact FAISS
 
@@ -71,7 +71,7 @@ Discovery is two-stage retrieval in the information-retrieval sense: arXiv retur
 
 **How:** exact-score the collection, filter allowed paper IDs, suppress heavily overlapping passages and apply per-paper quotas for comparison.
 
-**Trade-off:** filtering the entire exact ranking is acceptable at this scale but not appropriate for millions of chunks. Equal evidence quotas improve coverage, not answer completeness. Questions may need multiple targeted retrievals; this MVP does not use autonomous query planning.
+**Trade-off:** filtering the entire exact ranking is acceptable at this scale but not appropriate for millions of chunks. Equal evidence quotas improve coverage, not answer completeness. Questions may need multiple targeted retrievals.
 
 **Interview:** “I distinguished relevance from coverage. A comparison needs evidence from each paper, not simply the highest scores across all papers.”
 
