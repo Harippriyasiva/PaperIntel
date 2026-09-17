@@ -1,4 +1,4 @@
-"""Refactored from the supplied paper_fetching.py: arXiv -> MiniLM -> FAISS."""
+"""arXiv discovery and MiniLM-based paper ranking."""
 import re
 import threading
 import time
