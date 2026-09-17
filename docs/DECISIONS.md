@@ -19,7 +19,7 @@ Discovery is two-stage retrieval in the information-retrieval sense: arXiv retur
 
 **What:** retain Streamlit, the original color/CSS system and card renderer, and the discovery function names.
 
-**Why:** the user explicitly requested an evolution. The current app already expresses a paper-search interaction.
+**Why:** the existing paper-search interaction provides a clear starting point for full-text evidence retrieval.
 
 **How:** move network and vector operations out of the UI; provide compatibility exports in `paper_fetching.py`; replace abstract-only insight widgets with collection and evidence controls.
 

@@ -18,7 +18,7 @@ Hugging Face account before treating generated answers as verified. Keep
 tokens in Secrets; `.env`, `.venv`, local data, and `secrets.toml` are excluded
 from the repository.
 
-## Demo behavior and limits
+## Public app behavior and limits
 
 - Each browser session gets a separate temporary directory. These are not durable accounts.
 - Sessions cannot open each other's catalog through the app interface.
@@ -34,7 +34,7 @@ from the repository.
 ## Runtime
 
 MiniLM uses its official ONNX model with attention-masked mean pooling and normalized
-384-dimensional vectors. This removes the PyTorch dependency from the demo.
+384-dimensional vectors. This keeps the hosted runtime lightweight.
 FAISS is used where available; exact NumPy inner-product search is the fallback.
 Older FAISS-only collections may need preparing again on Windows. Original data is retained.
 

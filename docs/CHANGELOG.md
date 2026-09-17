@@ -1,9 +1,9 @@
 # PaperIntel release notes
 
-## 0.4.0 — public demo
+## 0.4.1 — public app
 
 - Published the Streamlit app at [paperintel-haripriya.streamlit.app](https://paperintel-haripriya.streamlit.app/).
-- Added session-isolated temporary collections and bounded public-demo operations.
+- Added session-isolated temporary collections and bounded public operations.
 - Verified hosted preparation of the bundled paper (19 pages, 123 passages) and page-linked retrieval.
 - Kept generated answers unavailable until a Hugging Face token is configured.
 
