@@ -1,4 +1,4 @@
-"""PaFet's familiar explanation headings, now backed by full-text evidence."""
+"""Guided research questions backed by full-text evidence."""
 from rag.retrieval import retrieve
 
 GUIDES = {

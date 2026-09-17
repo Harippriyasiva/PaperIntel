@@ -13,7 +13,7 @@ def extract_pages(path):
         if doc.needs_pass:
             raise ValueError('Encrypted PDFs are not supported.')
         if len(doc) > 150:
-            raise ValueError('This demo supports PDFs with at most 150 pages.')
+            raise ValueError('PaperIntel supports PDFs with at most 150 pages.')
         for number, page in enumerate(doc, 1):
             # Blocks preserve local paragraph structure; complex columns still need inspection.
             blocks = page.get_text('blocks', sort=True)
