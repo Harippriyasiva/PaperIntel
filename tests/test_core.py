@@ -1,4 +1,4 @@
-"""Offline integrity tests: real PDF extraction/FAISS, deterministic test embeddings.
+"""Offline integrity tests: PDF extraction/FAISS, deterministic test embeddings.
 
 These test doubles are NOT used by the application and do not measure MiniLM quality.
 """
@@ -46,9 +46,23 @@ def model():
     return Model()
 
 
+def make_sample_pdf(path):
+    """Create an original, multi-page paper-like fixture without redistributing a paper."""
+    with fitz.open() as doc:
+        for page_no in range(1, 20):
+            page = doc.new_page()
+            text = ('Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. '
+                    'RAG-Sequence and RAG-Token use retrieval to support generation. '
+                    'This test page contains training, retrieval, token, and sequence evidence. ')
+            page.insert_textbox(fitz.Rect(50, 50, 550, 750),
+                                f'Page {page_no}. ' + text * 8, fontsize=11)
+        doc.save(path)
+    return path
+
+
 @pytest.fixture
-def sample():
-    return Path(__file__).resolve().parents[1] / 'paper' / 'RAG_for_knowledge_intensive_NLP.pdf'
+def sample(tmp_path):
+    return make_sample_pdf(tmp_path / 'example.pdf')
 
 
 def test_arxiv_metadata_and_pdf_link():
@@ -81,7 +95,7 @@ def test_non_pdf_rejected():
         validate_pdf(b'<html>Error page</html>')
 
 
-def test_real_pdf_extraction_and_chunk_provenance(sample):
+def test_pdf_extraction_and_chunk_provenance(sample):
     pages, warnings = extract_pages(sample)
     assert len(pages) == 19
     assert 'Retrieval-Augmented Generation' in pages[0]['text']
