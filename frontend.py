@@ -85,13 +85,13 @@ html, body, [class*="css"] {{
 
 /* Streamlit's fixed application header caused the white strip in the UI. */
 header[data-testid="stHeader"] {{
-    background: {BG} !important;
-    height: 2rem !important;
+    background: transparent !important;
+    height: 3.75rem !important;
     border-bottom: none !important;
 }}
 
-/* Hide deployment chrome, not the sidebar's reopen/collapse controls. */
-[data-testid="stToolbar"], [data-testid="stDecoration"] {{ display: none !important; }}
+/* Keep the native toolbar: it contains the sidebar reopen button. */
+[data-testid="stDecoration"] {{ display: none !important; }}
 
 [data-testid="stToolbar"], [data-testid="stDecoration"] {{
     background: transparent !important;
@@ -523,16 +523,60 @@ section[data-testid="stSidebar"] {{
     box-shadow: 8px 0 32px rgba(50, 69, 130, 0.07) !important;
 }}
 section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {{
-    animation: sidebar-enter 420ms ease-out both;
+    animation: sidebar-enter 680ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }}
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(2) {{ animation-delay: 35ms; }}
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(3) {{ animation-delay: 70ms; }}
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(4) {{ animation-delay: 105ms; }}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(2) {{ animation-delay: 90ms; }}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(3) {{ animation-delay: 180ms; }}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(4) {{ animation-delay: 270ms; }}
 @keyframes sidebar-enter {{
-    from {{ opacity: 0; transform: translateX(-8px); }}
+    from {{ opacity: 0; transform: translateX(-18px); }}
     to {{ opacity: 1; transform: translateX(0); }}
 }}
-section[data-testid="stSidebar"] .stButton > button:hover {{
+
+
+.sidebar-brand {{
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #c9d7f2;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fff 0%, #ecebff 100%);
+    box-shadow: 0 10px 28px rgba(64, 71, 150, 0.10);
+}}
+.sidebar-brand strong {{ display: block; color: {INK}; font: 700 1.18rem 'Space Grotesk', sans-serif; }}
+.sidebar-brand small {{ display: block; color: {MUTED}; font: 500 0.72rem 'Inter', sans-serif; }}
+section[data-testid="stSidebar"] .sidebar-mark {{
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 12px;
+    color: #fff !important;
+    background: linear-gradient(135deg, #6758e9, #41a4e8);
+    box-shadow: 0 6px 16px rgba(85, 70, 216, 0.28);
+    font-size: 1.45rem;
+    animation: brand-breathe 3s ease-in-out infinite;
+}}
+@keyframes brand-breathe {{
+    0%, 100% {{ transform: translateY(0) rotate(-5deg); box-shadow: 0 6px 16px rgba(85, 70, 216, 0.28); }}
+    50% {{ transform: translateY(-4px) rotate(5deg); box-shadow: 0 10px 23px rgba(85, 70, 216, 0.38); }}
+}}
+[data-testid="stExpandSidebarButton"] {{
+    visibility: visible !important;
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    border: 1px solid {BORDER} !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    color: {INDIGO} !important;
+    box-shadow: 0 5px 16px rgba(38, 60, 111, 0.16) !important;
+}}
+[data-testid="stExpandSidebarButton"]:hover {{
+    background: {INDIGO_LO} !important;
+    transform: translateX(2px);
+}} section[data-testid="stSidebar"] .stButton > button:hover {{
+
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 18px rgba(85, 70, 216, 0.14) !important;
 }}
@@ -542,7 +586,7 @@ div[data-testid="stMetric"] {{
 }}
 @media (prefers-reduced-motion: reduce) {{
     section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div,
-    .dot-live {{ animation: none !important; }}
+    .dot-live, .sidebar-mark {{ animation: none !important; }}
     section[data-testid="stSidebar"] .stButton > button {{ transition: none !important; }}
     section[data-testid="stSidebar"] .stButton > button:hover {{ transform: none !important; }}
 }}
@@ -723,7 +767,7 @@ if PUBLIC_DEMO:
 store = Store(DATA)
 
 with st.sidebar:
-    st.title('⬡ PaperIntel')
+    st.markdown('<div class="sidebar-brand"><span class="sidebar-mark">⬡</span><span><strong>PaperIntel</strong><small>Research papers, made traceable</small></span></div>', unsafe_allow_html=True)
     st.caption(APP_VERSION)
     st.caption('Discover papers. Read with evidence.')
     st.markdown('**Build your reading collection**')
@@ -765,7 +809,7 @@ with discovery_tab:
         with col1:
             category = st.selectbox('arXiv category (optional)', ['', 'cs.AI', 'cs.CL', 'cs.LG', 'cs.CV', 'cs.IR', 'stat.ML'])
         with col2:
-            candidates = st.select_slider('Candidate pool', [25, 50, 100, 200], value=50)
+            candidates = st.select_slider('Candidate pool', [25, 50] if PUBLIC_DEMO else [25, 50, 100, 200], value=50)
         with col3:
             order = st.selectbox('Candidate ordering', ['relevance', 'submittedDate', 'lastUpdatedDate'])
         use_years = st.checkbox('Filter by submission year')
