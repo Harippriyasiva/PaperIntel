@@ -21,7 +21,7 @@ Qwen can draft a cited answer from those passages for the reader to verify.
 ## Try it
 
 1. In the live app, select **Prepare example RAG paper**. PaperIntel fetches it from arXiv on demand.
-2. Open **Paper Intelligence** and ask **How do RAG-Sequence and RAG-Token differ?**
+2. Open **Reading studio** and ask **How do RAG-Sequence and RAG-Token differ?**
 3. Select **Retrieve evidence**. Open the page-linked passages to inspect the source.
 
 The public app was verified with this workflow: the paper produced 19 extracted
