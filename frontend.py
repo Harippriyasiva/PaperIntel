@@ -14,7 +14,7 @@ from rag.retrieval import retrieve
 from rag.generation import generate, build_messages
 from rag.guided import GUIDES, guided_question, retrieve_overview
 
-APP_VERSION = '0.4.1'
+APP_VERSION = '0.5.0'
 
 st.set_page_config(
     page_title="PaperIntel",
@@ -78,9 +78,9 @@ html, body, [class*="css"] {{
 }}
 
 .block-container {{
-    padding-top: 2.6rem !important;
+    padding-top: 1.8rem !important;
     padding-bottom: 3rem !important;
-    max-width: 1280px !important;
+    max-width: 1480px !important;
 }}
 
 /* Streamlit's fixed application header caused the white strip in the UI. */
@@ -517,7 +517,8 @@ div[data-testid="stMultiSelect"] > div > div {{ background-color: {SURFACE2} !im
 [data-testid="stSidebar"] [data-testid="stHeadingWithActionElements"] h1 {{
     font-size: 1.65rem !important;
 }}
-/* Light reading surface and gentle navigation motion. */
+
+/* A light reading surface and gentle navigation motion. */
 section[data-testid="stSidebar"] {{
     background: linear-gradient(165deg, #f6f4ff 0%, #eaf4ff 53%, #ffffff 100%) !important;
     box-shadow: 8px 0 32px rgba(50, 69, 130, 0.07) !important;
@@ -532,8 +533,6 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child
     from {{ opacity: 0; transform: translateX(-18px); }}
     to {{ opacity: 1; transform: translateX(0); }}
 }}
-
-
 .sidebar-brand {{
     display: flex;
     align-items: center;
@@ -575,10 +574,81 @@ section[data-testid="stSidebar"] .sidebar-mark {{
 [data-testid="stExpandSidebarButton"]:hover {{
     background: {INDIGO_LO} !important;
     transform: translateX(2px);
-}} section[data-testid="stSidebar"] .stButton > button:hover {{
-
+}}
+section[data-testid="stSidebar"] .stButton > button:hover {{
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 18px rgba(85, 70, 216, 0.14) !important;
+}}
+.dashboard-hero {{
+    position: relative;
+    overflow: hidden;
+    min-height: 175px;
+    padding: 1.55rem 2.2rem;
+    border-radius: 25px;
+    background: linear-gradient(120deg, #14253f 0%, #283b70 55%, #6954bd 100%);
+    box-shadow: 0 18px 48px rgba(31, 49, 93, .18);
+    isolation: isolate;
+}}
+.dashboard-hero::before, .dashboard-hero::after {{
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.17);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}}
+.dashboard-hero::before {{ width: 380px; height: 380px; right: -60px; top: -190px; }}
+.dashboard-hero::after {{ width: 250px; height: 250px; right: 120px; bottom: -190px; }}
+.dashboard-hero .hero-kicker {{
+    color: #c4d5ff !important;
+    font: 700 .72rem 'Inter', sans-serif;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}}
+.dashboard-hero h1 {{
+    color: #fff !important;
+    font: 700 clamp(1.8rem, 2.6vw, 2.6rem)/1.08 'Space Grotesk', sans-serif;
+    letter-spacing: -.04em;
+    max-width: 730px;
+    margin: .45rem 0;
+}}
+.dashboard-hero p {{ color: #e7eeff !important; max-width: 690px; margin: 0; line-height: 1.6; }}
+.dashboard-hero .hero-pill {{
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    margin-top: .8rem;
+    padding: .4rem .75rem;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    color: #fff !important;
+    font-size: .78rem;
+    font-weight: 600;
+}}
+.dashboard-section {{
+    color: {INK};
+    font: 700 1.25rem 'Space Grotesk', sans-serif;
+    letter-spacing: -.025em;
+    margin: 1rem 0 .25rem;
+}}
+.dashboard-caption {{ color: {MUTED}; font-size: .86rem; margin: 0 0 1rem; }}
+.workflow-card {{
+    min-height: 82px;
+    padding: .8rem 1rem;
+    border: 1px solid {BORDER};
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 5px 22px rgba(31, 49, 93, .045);
+}}
+.workflow-card b {{ color: {INDIGO}; font-size: .7rem; letter-spacing: .12em; }}
+.workflow-card strong {{ display: block; color: {INK}; font: 700 1rem 'Space Grotesk', sans-serif; margin: .25rem 0; }}
+.workflow-card span {{ color: {MUTED}; font-size: .79rem; line-height: 1.4; }}
+div[data-testid="stMetric"] {{ border-radius: 16px !important; }}
+.stTabs [data-baseweb="tab-list"] {{ margin-top: 1.25rem; }}
+@media (max-width: 700px) {{
+    .dashboard-hero {{ min-height: auto; padding: 1.6rem; border-radius: 19px; }}
+    .dashboard-hero::before {{ right: -260px; }}
 }}
 div[data-testid="stMetric"] {{
     background: linear-gradient(145deg, #ffffff 0%, #f7f9ff 100%) !important;
@@ -768,19 +838,15 @@ store = Store(DATA)
 
 with st.sidebar:
     st.markdown('<div class="sidebar-brand"><span class="sidebar-mark">⬡</span><span><strong>PaperIntel</strong><small>Research papers, made traceable</small></span></div>', unsafe_allow_html=True)
-    st.caption(APP_VERSION)
-    st.caption('Discover papers. Read with evidence.')
-    st.markdown('**Build your reading collection**')
-    st.caption('Search a topic → Select five papers → Prepare your collection')
+    st.caption(f'RESEARCH WORKSPACE · {APP_VERSION}')
+    st.markdown('**Your library**')
     if PUBLIC_DEMO:
-        st.info('Your collection is private to this browser session and temporary. Download your evidence before leaving.')
-    st.write('**Generation:** ' + ('Token configured' if os.getenv('HF_TOKEN') else 'Token not configured'))
-    st.caption('Discovery and passage retrieval work without a Qwen token. The first MiniLM load needs internet.')
+        st.info('Your collection is private to this browser session and temporary. Download anything you want to keep.')
+    st.caption('AI answers ' + ('available' if os.getenv('HF_TOKEN') else 'not configured · evidence search still works'))
     if not PUBLIC_DEMO:
         with st.expander('Which version is running?'):
             st.code(str(Path(__file__).resolve()), language=None)
             st.caption('This path identifies the exact copy running on your computer.')
-    st.divider()
     saved = store.list_collections()
     if saved:
         selected_saved = st.selectbox('Saved collections', [c['id'] for c in saved],
@@ -790,19 +856,45 @@ with st.sidebar:
                 activate(store.load(selected_saved))
             except Exception as exc:
                 st.error(f'Could not open collection: {exc}')
-    st.divider()
-    st.write('**Try the one-paper example**')
-    st.caption('This prepares only the RAG paper. To see other papers, search in Paper Discovery and prepare a new collection.')
+    st.markdown('**Quick start**')
+    st.caption('Load the sample, or discover five papers to build your own collection.')
     if st.button('Prepare example RAG paper'):
         sample = sample_paper()
         prepare([sample], 'Learning example — RAG paper', learning_sample=True)
 
-st.markdown('<h1 class="hero-title">From finding papers to understanding them.</h1>', unsafe_allow_html=True)
-st.caption('Discover → Inspect the original PDF → Choose your collection → Understand with cited evidence')
-discovery_tab, intelligence_tab = st.tabs(['1 · Paper Discovery', '2 · Paper Intelligence'])
+st.markdown('''<div class="dashboard-hero">
+  <div class="hero-kicker">PaperIntel / Research workspace</div>
+  <h1>From a question to the evidence behind it.</h1>
+  <p>Discover research papers, build a focused collection, and explore page-linked evidence from the original PDFs.</p>
+  <span class="hero-pill">● &nbsp; Discover → Curate → Read</span>
+</div>''', unsafe_allow_html=True)
+
+active_collection = st.session_state.collection
+active_manifest = active_collection['manifest'] if active_collection else None
+ready_count = sum(p['status'] == 'ready' for p in active_manifest['papers']) if active_manifest else 0
+st.markdown('<div class="dashboard-section">Workspace snapshot</div>', unsafe_allow_html=True)
+with st.container(horizontal=True):
+    st.metric('Search results', len(st.session_state.ranked), border=True)
+    st.metric('Papers ready', ready_count, border=True)
+    st.metric('Searchable passages', active_manifest['chunk_count'] if active_manifest else 0, border=True)
+    st.metric('AI answers', 'Ready' if os.getenv('HF_TOKEN') else 'Optional', border=True)
+
+st.markdown('<div class="dashboard-section">Your research flow</div>', unsafe_allow_html=True)
+flow_columns = st.columns(3)
+for column, number, title, detail in zip(
+    flow_columns,
+    ('01', '02', '03'),
+    ('Discover', 'Build a collection', 'Follow the evidence'),
+    ('Search arXiv and rank relevant papers.', 'Choose five results and prepare their PDFs.', 'Retrieve passages and inspect cited pages.'),
+):
+    with column:
+        st.markdown(f'<div class="workflow-card"><b>{number}</b><strong>{title}</strong><span>{detail}</span></div>', unsafe_allow_html=True)
+
+discovery_tab, intelligence_tab = st.tabs([':material/search: Discover papers', ':material/menu_book: Reading studio'])
 
 with discovery_tab:
-    st.info('To read more than the example RAG paper: search below, choose five results, then select **Prepare selected papers**. Open the new collection in Paper Intelligence.')
+    st.subheader('Discover papers')
+    st.caption('Search a topic, inspect the original PDF, then select five papers for your reading collection.')
     with st.form('search_form'):
         query = st.text_input('Research topic', placeholder='retrieval augmented generation')
         col1, col2, col3 = st.columns(3)
@@ -873,7 +965,8 @@ with discovery_tab:
 with intelligence_tab:
     collection = st.session_state.collection
     if collection is None:
-        st.info('Select 5–25 discovery papers, open a saved collection, or prepare the example paper from arXiv.')
+        st.subheader('Your reading studio')
+        st.info('Your workspace is ready. Search and prepare five papers in Discover, open a saved collection, or load the example from the sidebar.')
     else:
         manifest = collection['manifest']
         ready = {p['paper_id']: p for p in manifest['papers'] if p['status'] == 'ready'}
