@@ -66,7 +66,7 @@ class Store:
         """Only publish a collection after both metadata and index have been written.
 
         Failed papers remain explicit in the manifest; successful papers stay usable.
-        A one-paper exception exists only for the bundled learning example.
+        A one-paper exception exists only for the example learning paper.
         """
         from paper import vector_index as faiss
         if len({p['paper_id'] for p in papers}) != len(papers):
