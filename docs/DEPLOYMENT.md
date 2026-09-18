@@ -6,7 +6,7 @@ Streamlit Community Cloud deploys `streamlit_app.py` from the `main` branch of
 Python 3.12 and the repository's `requirements.txt`. The public entry point
 uses temporary, session-isolated storage. Local persistent mode uses `frontend.py`.
 
-The hosted app was checked with the bundled RAG paper: it extracted 19 pages,
+The hosted app was checked with the example RAG paper from arXiv: it extracted 19 pages,
 indexed 123 passages, and returned page-linked evidence for a question about
 RAG-Sequence and RAG-Token. Public arXiv search and five-paper preparation were
 tested locally. Answer generation still needs a configured Hugging Face token
@@ -23,7 +23,7 @@ from the repository.
 - Each browser session gets a separate temporary directory. These are not durable accounts.
 - Sessions cannot open each other's catalog through the app interface.
 - Downloads let readers save evidence and explanations before leaving.
-- Public collection preparation accepts five papers, plus the single learning sample.
+- Public collection preparation accepts five papers, plus the single learning sample fetched from arXiv on demand.
 - Public search is bounded to 50 candidate papers; select 25 or 50 in the UI.
 - Per-process hourly limits: 20 answer attempts, 12 preparation attempts, 60 previews, 60 searches.
 - Limits reset with the server process; they are not a billing cap or distributed rate limiter.

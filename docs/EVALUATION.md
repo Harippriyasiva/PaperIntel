@@ -13,7 +13,7 @@ Create 12–20 questions across your five-paper collection:
 
 For each, record expected paper IDs, PDF pages, and the exact supporting passages after reading them. Do not derive the ground truth from PaperIntel's generated answer. Use the same questions across comparisons of chunk size or retrieval top-k.
 
-The bundled paper can seed questions about RAG-Sequence versus RAG-Token, retriever and generator components, datasets, and experiment limitations. Verify expected pages manually; this guide does not invent ground-truth labels.
+The example paper fetched from arXiv can seed questions about RAG-Sequence versus RAG-Token, retriever and generator components, datasets, and experiment limitations. Verify expected pages manually; this guide does not invent ground-truth labels.
 
 ## Record these measurements
 

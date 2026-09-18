@@ -1,6 +1,6 @@
 # Understand PaperIntel by tracing one question
 
-Do these exercises in order. The goal is to understand and debug the system, not memorize every line. Start with your bundled RAG paper so you can compare results with a document you can read yourself.
+Do these exercises in order. The goal is to understand and debug the system, not memorize every line. Start with the example RAG paper fetched from arXiv so you can compare results with a document you can read yourself.
 
 ## 1. Draw the two searches from memory (5 minutes)
 
@@ -15,7 +15,7 @@ Expected concepts: arXiv keyword API; titles/abstracts; MiniLM/FAISS; full-text 
 
 ## 2. Inspect a real passage before asking Qwen (10 minutes)
 
-Prepare the bundled paper, open Paper Intelligence, ask “How do RAG-Sequence and RAG-Token differ?”, and click Retrieve evidence.
+Prepare the example paper, open Paper Intelligence, ask “How do RAG-Sequence and RAG-Token differ?”, and click Retrieve evidence.
 
 For the first three results, write down the paper ID, PDF page, similarity score, and one sentence that actually helps answer the question. Open each cited PDF page. Check whether extraction preserved the text correctly.
 
@@ -62,7 +62,7 @@ Do not change chunk size yet. Understand top-k first. Later, a controlled experi
 
 ## 6. Test an unanswerable question (10 minutes)
 
-Ask the bundled paper a question it does not establish, such as “What was the model's performance on a dataset introduced after this paper was written?”
+Ask the example paper a question it does not establish, such as “What was the model's performance on a dataset introduced after this paper was written?”
 
 The retriever will still return nearest neighbors; this does not mean an answer exists. Check whether Qwen admits missing evidence. If it invents an answer, record that as a failure in your evaluation. The current implementation does not claim guaranteed abstention.
 
