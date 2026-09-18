@@ -9,7 +9,9 @@ def test_ui_starts_without_hf_token(monkeypatch, tmp_path):
     monkeypatch.delenv('HF_TOKEN', raising=False)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / 'frontend.py')).run(timeout=20)
     assert not app.exception
-    assert [tab.label for tab in app.tabs] == ['1 · Paper Discovery', '2 · Paper Intelligence']
+    assert [tab.label for tab in app.tabs] == [
+        ':material/search: Discover papers', ':material/menu_book: Reading studio'
+    ]
     assert any(b.label == 'Prepare example RAG paper' for b in app.button)
 
 
