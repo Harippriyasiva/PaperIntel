@@ -14,7 +14,7 @@ from rag.retrieval import retrieve
 from rag.generation import generate, build_messages
 from rag.guided import GUIDES, guided_question, retrieve_overview
 
-APP_VERSION = '0.5.1'
+APP_VERSION = '0.5.2'
 
 st.set_page_config(
     page_title="PaperIntel",
@@ -635,6 +635,52 @@ div[data-testid="stMetric"] {{
     section[data-testid="stSidebar"] .stButton > button {{ transition: none !important; }}
     section[data-testid="stSidebar"] .stButton > button:hover {{ transform: none !important; }}
 }}
+/* Spacious, light reading theme. Keep native navigation controls visible. */
+.stApp {{ background: #f8fafd !important; }}
+html, body, input, textarea, button {{ font-family: 'Inter', Arial, sans-serif !important; }}
+.stMarkdown p, .stMarkdown li, label p, [data-testid="stWidgetLabel"] p,
+[data-testid="stTextInput"] input, [data-testid="stNumberInput"] input,
+[data-testid="stTextArea"] textarea, [data-baseweb="select"] {{
+    font-size: 1.05rem !important;
+    line-height: 1.65 !important;
+}}
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {{
+    font-size: .95rem !important;
+    line-height: 1.6 !important;
+    color: #526071 !important;
+}}
+section[data-testid="stSidebar"] {{ background: #edf3fc !important; box-shadow: none !important; }}
+.sidebar-brand {{ background: #fff; border-color: #dce5f1; box-shadow: none; }}
+.sidebar-brand strong {{ font-size: 1.4rem; }}
+.sidebar-brand small {{ font-size: .9rem; line-height: 1.45; }}
+section[data-testid="stSidebar"] .sidebar-mark {{ background: #1a73e8; animation: none; box-shadow: none; }}
+.dashboard-hero {{
+    background: #fff;
+    border: 1px solid #dce5f1;
+    box-shadow: 0 3px 14px rgba(60,64,67,.05);
+    padding: 2rem;
+}}
+.dashboard-hero::before, .dashboard-hero::after {{ display: none; }}
+.dashboard-hero .hero-kicker {{ color: #1a73e8 !important; font-size: 1rem; letter-spacing: .06em; }}
+.dashboard-hero h1 {{ color: #202124 !important; font: 600 clamp(2rem, 3vw, 2.9rem)/1.2 'Inter', Arial, sans-serif; max-width: none; }}
+.dashboard-hero p {{ color: #526071 !important; font-size: 1.1rem !important; max-width: none; }}
+.dashboard-section {{ font: 600 1.5rem 'Inter', Arial, sans-serif; margin-top: 1.3rem; }}
+div[data-testid="stMetric"] {{ background: #fff !important; box-shadow: none !important; padding: 1.3rem !important; }}
+div[data-testid="stMetricLabel"] p {{ font-size: 1rem !important; text-transform: none !important; letter-spacing: normal !important; }}
+div[data-testid="stMetricValue"] {{ font-size: 2rem !important; }}
+.stButton > button, [data-testid="stFormSubmitButton"] button, [data-testid="stDownloadButton"] button {{
+    min-height: 46px;
+    font-size: 1rem !important;
+    border-radius: 24px !important;
+}}
+.stButton > button[kind="primary"], button[kind="primary"], [data-testid="stFormSubmitButton"] button {{ background: #1a73e8 !important; }}
+.stButton > button[kind="primary"]:hover, [data-testid="stFormSubmitButton"] button:hover {{ background: #1765cc !important; box-shadow: 0 2px 8px rgba(26,115,232,.2) !important; }}
+.stTabs [data-baseweb="tab-list"] {{ background: #eef3fb !important; }}
+.stTabs [data-baseweb="tab"] {{ padding: .7rem 1.3rem !important; font-size: 1.05rem !important; }}
+.stTabs [aria-selected="true"] {{ background: #d3e3fd !important; color: #174ea6 !important; }}
+.stTabs [aria-selected="true"] p {{ color: #174ea6 !important; }}
+div[data-testid="stForm"] {{ box-shadow: none !important; padding: 1.5rem !important; }}
+@media (max-width: 700px) {{ .dashboard-hero {{ padding: 1.35rem; }} }}
 </style>
 """
 
