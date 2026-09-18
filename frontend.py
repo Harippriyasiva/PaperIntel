@@ -727,7 +727,7 @@ with st.sidebar:
     st.caption(APP_VERSION)
     st.caption('Discover papers. Read with evidence.')
     st.markdown('**Build your reading collection**')
-    st.caption('1. Search a research topic  ·  2. Select five papers  ·  3. Prepare and open the collection')
+    st.caption('Search a topic → Select five papers → Prepare your collection')
     if PUBLIC_DEMO:
         st.info('Your collection is private to this browser session and temporary. Download your evidence before leaving.')
     st.write('**Generation:** ' + ('Token configured' if os.getenv('HF_TOKEN') else 'Token not configured'))
