@@ -14,7 +14,7 @@ from rag.retrieval import retrieve
 from rag.generation import generate, build_messages
 from rag.guided import GUIDES, guided_question, retrieve_overview
 
-APP_VERSION = '0.5.0'
+APP_VERSION = '0.5.1'
 
 st.set_page_config(
     page_title="PaperIntel",
@@ -613,37 +613,12 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     margin: .45rem 0;
 }}
 .dashboard-hero p {{ color: #e7eeff !important; max-width: 690px; margin: 0; line-height: 1.6; }}
-.dashboard-hero .hero-pill {{
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    margin-top: .8rem;
-    padding: .4rem .75rem;
-    border: 1px solid rgba(255,255,255,.3);
-    border-radius: 999px;
-    background: rgba(255,255,255,.12);
-    color: #fff !important;
-    font-size: .78rem;
-    font-weight: 600;
-}}
 .dashboard-section {{
     color: {INK};
     font: 700 1.25rem 'Space Grotesk', sans-serif;
     letter-spacing: -.025em;
     margin: 1rem 0 .25rem;
 }}
-.dashboard-caption {{ color: {MUTED}; font-size: .86rem; margin: 0 0 1rem; }}
-.workflow-card {{
-    min-height: 82px;
-    padding: .8rem 1rem;
-    border: 1px solid {BORDER};
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 5px 22px rgba(31, 49, 93, .045);
-}}
-.workflow-card b {{ color: {INDIGO}; font-size: .7rem; letter-spacing: .12em; }}
-.workflow-card strong {{ display: block; color: {INK}; font: 700 1rem 'Space Grotesk', sans-serif; margin: .25rem 0; }}
-.workflow-card span {{ color: {MUTED}; font-size: .79rem; line-height: 1.4; }}
 div[data-testid="stMetric"] {{ border-radius: 16px !important; }}
 .stTabs [data-baseweb="tab-list"] {{ margin-top: 1.25rem; }}
 @media (max-width: 700px) {{
@@ -838,11 +813,11 @@ store = Store(DATA)
 
 with st.sidebar:
     st.markdown('<div class="sidebar-brand"><span class="sidebar-mark">⬡</span><span><strong>PaperIntel</strong><small>Research papers, made traceable</small></span></div>', unsafe_allow_html=True)
-    st.caption(f'RESEARCH WORKSPACE · {APP_VERSION}')
+    st.caption(APP_VERSION)
     st.markdown('**Your library**')
     if PUBLIC_DEMO:
-        st.info('Your collection is private to this browser session and temporary. Download anything you want to keep.')
-    st.caption('AI answers ' + ('available' if os.getenv('HF_TOKEN') else 'not configured · evidence search still works'))
+        st.info('Your work is private to this browser session. Download results to keep them.')
+    st.caption('AI answers: ' + ('on' if os.getenv('HF_TOKEN') else 'off · evidence search works'))
     if not PUBLIC_DEMO:
         with st.expander('Which version is running?'):
             st.code(str(Path(__file__).resolve()), language=None)
@@ -857,44 +832,31 @@ with st.sidebar:
             except Exception as exc:
                 st.error(f'Could not open collection: {exc}')
     st.markdown('**Quick start**')
-    st.caption('Load the sample, or discover five papers to build your own collection.')
     if st.button('Prepare example RAG paper'):
         sample = sample_paper()
         prepare([sample], 'Learning example — RAG paper', learning_sample=True)
 
 st.markdown('''<div class="dashboard-hero">
-  <div class="hero-kicker">PaperIntel / Research workspace</div>
-  <h1>From a question to the evidence behind it.</h1>
-  <p>Discover research papers, build a focused collection, and explore page-linked evidence from the original PDFs.</p>
-  <span class="hero-pill">● &nbsp; Discover → Curate → Read</span>
+  <div class="hero-kicker">PaperIntel</div>
+  <h1>Research, backed by evidence.</h1>
+  <p>Find papers, read PDFs, and trace results to their source pages.</p>
 </div>''', unsafe_allow_html=True)
 
 active_collection = st.session_state.collection
 active_manifest = active_collection['manifest'] if active_collection else None
 ready_count = sum(p['status'] == 'ready' for p in active_manifest['papers']) if active_manifest else 0
-st.markdown('<div class="dashboard-section">Workspace snapshot</div>', unsafe_allow_html=True)
+st.markdown('<div class="dashboard-section">Workspace</div>', unsafe_allow_html=True)
 with st.container(horizontal=True):
     st.metric('Search results', len(st.session_state.ranked), border=True)
     st.metric('Papers ready', ready_count, border=True)
     st.metric('Searchable passages', active_manifest['chunk_count'] if active_manifest else 0, border=True)
-    st.metric('AI answers', 'Ready' if os.getenv('HF_TOKEN') else 'Optional', border=True)
-
-st.markdown('<div class="dashboard-section">Your research flow</div>', unsafe_allow_html=True)
-flow_columns = st.columns(3)
-for column, number, title, detail in zip(
-    flow_columns,
-    ('01', '02', '03'),
-    ('Discover', 'Build a collection', 'Follow the evidence'),
-    ('Search arXiv and rank relevant papers.', 'Choose five results and prepare their PDFs.', 'Retrieve passages and inspect cited pages.'),
-):
-    with column:
-        st.markdown(f'<div class="workflow-card"><b>{number}</b><strong>{title}</strong><span>{detail}</span></div>', unsafe_allow_html=True)
+    st.metric('AI answers', 'On' if os.getenv('HF_TOKEN') else 'Off', border=True)
 
 discovery_tab, intelligence_tab = st.tabs([':material/search: Discover papers', ':material/menu_book: Reading studio'])
 
 with discovery_tab:
-    st.subheader('Discover papers')
-    st.caption('Search a topic, inspect the original PDF, then select five papers for your reading collection.')
+    st.subheader('Find papers')
+    st.caption('Search arXiv, then choose five papers.')
     with st.form('search_form'):
         query = st.text_input('Research topic', placeholder='retrieval augmented generation')
         col1, col2, col3 = st.columns(3)
@@ -966,7 +928,7 @@ with intelligence_tab:
     collection = st.session_state.collection
     if collection is None:
         st.subheader('Your reading studio')
-        st.info('Your workspace is ready. Search and prepare five papers in Discover, open a saved collection, or load the example from the sidebar.')
+        st.info('Prepare five papers in Discover, or load the example from the sidebar.')
     else:
         manifest = collection['manifest']
         ready = {p['paper_id']: p for p in manifest['papers'] if p['status'] == 'ready'}
@@ -1061,6 +1023,4 @@ with intelligence_tab:
         elif trace:
             st.info('The question or scope changed. Retrieve again to avoid showing stale evidence.')
 
-st.divider()
-st.caption('Discover papers, inspect the original PDF, and trace answers back to page-linked evidence.')
 st.caption('Thank you to arXiv for use of its open access interoperability.')
