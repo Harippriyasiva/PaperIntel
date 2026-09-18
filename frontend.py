@@ -517,6 +517,35 @@ div[data-testid="stMultiSelect"] > div > div {{ background-color: {SURFACE2} !im
 [data-testid="stSidebar"] [data-testid="stHeadingWithActionElements"] h1 {{
     font-size: 1.65rem !important;
 }}
+/* Light reading surface and gentle navigation motion. */
+section[data-testid="stSidebar"] {{
+    background: linear-gradient(165deg, #f6f4ff 0%, #eaf4ff 53%, #ffffff 100%) !important;
+    box-shadow: 8px 0 32px rgba(50, 69, 130, 0.07) !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {{
+    animation: sidebar-enter 420ms ease-out both;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(2) {{ animation-delay: 35ms; }}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(3) {{ animation-delay: 70ms; }}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:nth-child(4) {{ animation-delay: 105ms; }}
+@keyframes sidebar-enter {{
+    from {{ opacity: 0; transform: translateX(-8px); }}
+    to {{ opacity: 1; transform: translateX(0); }}
+}}
+section[data-testid="stSidebar"] .stButton > button:hover {{
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 18px rgba(85, 70, 216, 0.14) !important;
+}}
+div[data-testid="stMetric"] {{
+    background: linear-gradient(145deg, #ffffff 0%, #f7f9ff 100%) !important;
+    box-shadow: 0 8px 24px rgba(46, 67, 117, 0.06) !important;
+}}
+@media (prefers-reduced-motion: reduce) {{
+    section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div,
+    .dot-live {{ animation: none !important; }}
+    section[data-testid="stSidebar"] .stButton > button {{ transition: none !important; }}
+    section[data-testid="stSidebar"] .stButton > button:hover {{ transform: none !important; }}
+}}
 </style>
 """
 
@@ -696,7 +725,9 @@ store = Store(DATA)
 with st.sidebar:
     st.title('⬡ PaperIntel')
     st.caption(APP_VERSION)
-    st.caption('Find papers. Understand the evidence.')
+    st.caption('Discover papers. Read with evidence.')
+    st.markdown('**Build your reading collection**')
+    st.caption('1. Search a research topic  ·  2. Select five papers  ·  3. Prepare and open the collection')
     if PUBLIC_DEMO:
         st.info('Your collection is private to this browser session and temporary. Download your evidence before leaving.')
     st.write('**Generation:** ' + ('Token configured' if os.getenv('HF_TOKEN') else 'Token not configured'))
@@ -716,8 +747,8 @@ with st.sidebar:
             except Exception as exc:
                 st.error(f'Could not open collection: {exc}')
     st.divider()
-    st.write('**Start with your paper**')
-    st.caption('Start with one paper, then try a five-paper discovery collection.' if PUBLIC_DEMO else 'A one-paper learning example. Normal discovery collections contain 5–25 papers.')
+    st.write('**Try the one-paper example**')
+    st.caption('This prepares only the RAG paper. To see other papers, search in Paper Discovery and prepare a new collection.')
     if st.button('Prepare example RAG paper'):
         sample = sample_paper()
         prepare([sample], 'Learning example — RAG paper', learning_sample=True)
@@ -727,6 +758,7 @@ st.caption('Discover → Inspect the original PDF → Choose your collection →
 discovery_tab, intelligence_tab = st.tabs(['1 · Paper Discovery', '2 · Paper Intelligence'])
 
 with discovery_tab:
+    st.info('To read more than the example RAG paper: search below, choose five results, then select **Prepare selected papers**. Open the new collection in Paper Intelligence.')
     with st.form('search_form'):
         query = st.text_input('Research topic', placeholder='retrieval augmented generation')
         col1, col2, col3 = st.columns(3)
@@ -802,6 +834,8 @@ with intelligence_tab:
         manifest = collection['manifest']
         ready = {p['paper_id']: p for p in manifest['papers'] if p['status'] == 'ready'}
         st.subheader(manifest['name'])
+        if manifest.get('learning_sample') or len(manifest['papers']) == 1:
+            st.info('This is the one-paper learning example, so the paper menu contains only the RAG paper. For more papers, use Paper Discovery to search, select five results, and prepare a new collection.')
         a, b, c = st.columns(3)
         a.metric('Papers ready', f"{len(ready)}/{len(manifest['papers'])}")
         b.metric('Extracted pages', sum(p['pages'] for p in ready.values()))
