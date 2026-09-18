@@ -20,7 +20,7 @@ Qwen can draft a cited answer from those passages for the reader to verify.
 
 ## Try it
 
-1. In the live app, select **Prepare bundled RAG paper**.
+1. In the live app, select **Prepare example RAG paper**. PaperIntel fetches it from arXiv on demand.
 2. Open **Paper Intelligence** and ask **How do RAG-Sequence and RAG-Token differ?**
 3. Select **Retrieve evidence**. Open the page-linked passages to inspect the source.
 
@@ -63,6 +63,9 @@ Windows and processed five real papers locally into 506 passages. The public
 sample workflow was also verified. Answer quality and citation support still
 need a live Qwen check and evaluation; [the evaluation plan](docs/EVALUATION.md)
 describes that work.
+
+The example PDF is fetched from [the original arXiv record](https://arxiv.org/abs/2005.11401v4)
+when requested; no third-party paper PDF is included in this repository.
 
 PaperIntel uses PyMuPDF for PDF text, SQLite for local collection metadata,
 MiniLM ONNX for embeddings, and Streamlit for the interface. Thanks to arXiv

@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 import streamlit as st
 import fitz
-from config import ROOT, DATA, QWEN_MODEL, PUBLIC_DEMO
+from config import DATA, QWEN_MODEL, PUBLIC_DEMO
 from demo_runtime import session_data, reserve
 from paper_fetching import load_model, search_arxiv, build_faiss_index, retrieve_top_papers
 from rag.store import Store
@@ -602,13 +602,12 @@ def activate(collection):
     st.session_state.answer = None
 
 
-def bundled_paper():
+def sample_paper():
     return dict(paper_id='2005.11401v4',
                 title='Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks',
                 summary='', authors=['Patrick Lewis et al.'],
                 paper_url='https://arxiv.org/abs/2005.11401v4',
-                pdf_url='https://arxiv.org/pdf/2005.11401v4',
-                local_path=str(ROOT / 'paper' / 'RAG_for_knowledge_intensive_NLP.pdf'))
+                pdf_url='https://arxiv.org/pdf/2005.11401v4')
 
 
 def pdf_reader(paper, namespace):
@@ -719,8 +718,8 @@ with st.sidebar:
     st.divider()
     st.write('**Start with your paper**')
     st.caption('Start with one paper, then try a five-paper discovery collection.' if PUBLIC_DEMO else 'A one-paper learning example. Normal discovery collections contain 5–25 papers.')
-    if st.button('Prepare bundled RAG paper'):
-        sample = bundled_paper()
+    if st.button('Prepare example RAG paper'):
+        sample = sample_paper()
         prepare([sample], 'Learning example — RAG paper', learning_sample=True)
 
 st.markdown('<h1 class="hero-title">From finding papers to understanding them.</h1>', unsafe_allow_html=True)
@@ -791,14 +790,14 @@ with discovery_tab:
                 st.link_button('Open on arXiv ↗', paper['paper_url'])
     else:
         st.subheader('Try the paper reader first')
-        st.caption('Your bundled paper is ready to preview. This step requires no API token or model download.')
+        st.caption('Load the example paper from arXiv to preview it. No API token or model download needed.')
         with st.expander('Full-paper reader & download', expanded=True):
-            pdf_reader(bundled_paper(), 'sample_reader')
+            pdf_reader(sample_paper(), 'sample_reader')
 
 with intelligence_tab:
     collection = st.session_state.collection
     if collection is None:
-        st.info('Select 5–25 discovery papers, open a saved collection, or prepare the bundled learning paper.')
+        st.info('Select 5–25 discovery papers, open a saved collection, or prepare the example paper from arXiv.')
     else:
         manifest = collection['manifest']
         ready = {p['paper_id']: p for p in manifest['papers'] if p['status'] == 'ready'}
